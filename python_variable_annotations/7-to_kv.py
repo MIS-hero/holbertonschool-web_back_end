@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""This module provides a function to create a key-value tuple with a squared value."""
+"""This module provides a function to create a
+key-value tuple with a squared value."""
 
 from typing import Tuple, Union
 
