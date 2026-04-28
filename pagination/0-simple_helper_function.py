@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
+"""Module that provides a helper function to compute pagination."""
 from typing import Tuple
-"""Module providing a helper function for pagination index ranges."""
 
 
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
