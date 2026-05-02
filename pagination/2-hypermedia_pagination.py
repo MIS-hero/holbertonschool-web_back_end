@@ -2,6 +2,7 @@
 """Module that provides a helper function to compute pagination."""
 from typing import Tuple
 import csv
+import math
 from typing import List
 
 
@@ -24,12 +25,14 @@ class Server:
 
         return self.__dataset
 
-    def index_range(page: int, page_size: int) -> Tuple[int, int]:
+    def index_range(self, page: int, page_size: int) -> Tuple[int, int]:
         """Return a tuple containing start and end indexes for pagination."""
-        if page > 0:
+        if page != 0:
             start_index = (page - 1) * page_size
             end_index = start_index + page_size
             return start_index, end_index
+        else:
+            return "page cannot be zero"
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """Return a page of the dataset based on page number and page size.
@@ -52,12 +55,10 @@ class Server:
         if (len(self.dataset()) > end):
             next_page = page + 1
 
-        total_pages = int(len(self.dataset()) / 10)
-        if page_size > 0:
-            total_pages = int(len(self.dataset()) / page_size)
+        total_pages = math.ceil(len(self.dataset()) / page_size)
 
         hyper = {
-            "page_size": len(self.getpage(page, page_size)),
+            "page_size": len(self.get_page(page, page_size)),
             "page": page,
             "data": self.get_page(page, page_size),
             "next_page": next_page,
