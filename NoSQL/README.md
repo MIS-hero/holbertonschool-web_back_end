@@ -1,1 +1,1 @@
-# NoSQL
+this project is about nosql
