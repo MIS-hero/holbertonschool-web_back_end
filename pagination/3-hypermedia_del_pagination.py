@@ -38,29 +38,29 @@ class Server:
             }
         return self.__indexed_dataset
 
-def get_hyper_index(self, index: int = None, page_size: int = 10) -> dict:
-    """Deletion-resilient hypermedia pagination"""
+    def get_hyper_index(self, index: int = None, page_size: int = 10) -> dict:
+        """Deletion-resilient hypermedia pagination"""
 
-    assert isinstance(index, int)
-    assert isinstance(page_size, int)
-    assert index >= 0
+        assert isinstance(index, int)
+        assert isinstance(page_size, int)
+        assert index >= 0
 
-    dataset = self.indexed_dataset()
+        dataset = self.indexed_dataset()
 
-    # Ensure index exists in dataset keys
-    assert index in dataset
+        # Ensure index exists in dataset keys
+        assert index in dataset
 
-    data = []
-    cursor = index
+        data = []
+        cursor = index
 
-    # Collect until we reach page_size valid items
-    while len(data) < page_size and cursor in dataset:
-        data.append(dataset[cursor])
-        cursor += 1
+        # Collect until we reach page_size valid items
+        while len(data) < page_size and cursor in dataset:
+            data.append(dataset[cursor])
+            cursor += 1
 
-    return {
-        "index": index,
-        "data": data,
-        "page_size": len(data),
-        "next_index": cursor
-    }
+        return {
+            "index": index,
+            "data": data,
+            "page_size": len(data),
+            "next_index": cursor
+        }
