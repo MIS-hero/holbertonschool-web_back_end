@@ -24,50 +24,47 @@ class Server:
 
         return self.__dataset
 
+    def index_range(page: int, page_size: int) -> Tuple[int, int]:
+        """Return a tuple containing start and end indexes for pagination."""
+        if page != 0:
+            start_index = (page - 1) * page_size
+            end_index = start_index + page_size
+            return start_index, end_index
+        else:
+            return "page cannot be zero"
 
-def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-    """Return a page of the dataset based on page number and page size.
-    """
-    assert isinstance(page, int) and isinstance(page_size, int)
-    assert page > 0 and page_size > 0
-    dataset = self.dataset()
-    start, end = index_range(page, page_size)
-    return dataset[start:end]
+    def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
+        """Return a page of the dataset based on page number and page size.
+        """
+        assert isinstance(page, int) and isinstance(page_size, int)
+        assert page > 0 and page_size > 0
+        dataset = self.dataset()
+        start, end = self.index_range(page, page_size)
+        return dataset[start:end]
 
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> dict:
+        """Returns a dictionary of hypermedia key-value pairs"""
+        start, end = self.index_range(page, page_size)
 
-def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    """Return a tuple containing start and end indexes for pagination."""
-    if page != 0:
-        start_index = (page - 1) * page_size
-        end_index = start_index + page_size
-        return start_index, end_index
-    else:
-        return "page cannot be zero"
+        prev_page = None
+        if page > 1:
+            prev_page = page - 1
 
+        next_page = None
+        if (len(self.dataset()) > end):
+            next_page = page + 1
 
-def get_hyper(self, page: int = 1, page_size: int = 10) -> dict:
-    """Returns a dictionary of hypermedia key-value pairs"""
-    start, end = index_range(page, page_size)
+        total_pages = int(len(self.dataset()) / 10)
+        if page_size > 0:
+            total_pages = int(len(self.dataset()) / page_size)
 
-    prev_page = None
-    if page > 1:
-        prev_page = page - 1
+        hyper = {
+            "page_size": len(self.getpage(page, page_size)),
+            "page": page,
+            "data": self.get_page(page, page_size),
+            "next_page": next_page,
+            "prev_page": prev_page,
+            "total_pages": total_pages
+        }
 
-    next_page = None
-    if (len(self.dataset()) > end):
-        next_page = page + 1
-
-    total_pages = int(len(self.dataset()) / 10)
-    if page_size > 0:
-        total_pages = int(len(self.dataset()) / page_size)
-
-    hyper = {
-        "page_size": len(self.getpage(page, page_size)),
-        "page": page,
-        "data": self.get_page(page, page_size),
-        "next_page": next_page,
-        "prev_page": prev_page,
-        "total_pages": total_pages
-    }
-
-    return hyper
+        return hyper
