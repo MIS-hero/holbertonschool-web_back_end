@@ -43,11 +43,11 @@ class Server:
         """
         assert isinstance(index, int) and isinstance(page_size, int)
         assert index >= 0
-        assert index < len(self.indexed_dataset)
+        assert index < len(self.indexed_dataset())
         data = []
         index_temp = index
-        while len(data) < page_size and index_temp < len(self.indexed_dataset):
-            if index_temp in self.indexed_dataset:
+        while len(data) < page_size and index_temp < len(self.indexed_dataset()):
+            if index_temp in self.indexed_dataset():
                 data.append(self.indexed_dataset[index_temp])
             index_temp += 1
 
