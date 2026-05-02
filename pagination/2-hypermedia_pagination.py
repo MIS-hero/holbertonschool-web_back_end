@@ -30,8 +30,6 @@ class Server:
             start_index = (page - 1) * page_size
             end_index = start_index + page_size
             return start_index, end_index
-        else:
-            return "page cannot be zero"
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """Return a page of the dataset based on page number and page size.
